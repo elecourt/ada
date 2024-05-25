@@ -23,11 +23,11 @@ jobs:
  
     - name: Install dependencies
       run: |
-        npm install LeanStartUp/ada-front
-        npm install LeanStartUp/ada-back
+        npm install ada/ada-front
+        npm install ada/ada-back
  
     - name: Build React app
-      run: npm run build LeanStartUp/ada-front
+      run: npm run build ada/ada-front
  
   deploy:
     needs: build
