@@ -1,0 +1,41 @@
+.header {
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .logo {
+    width: 50px;
+    margin-right: auto;
+    margin-left: 20px;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+  }
+  
+  .nav-links li {
+    margin-right: 40px;
+  }
+  
+  .buttons {
+    margin-left: 40px;
+  }
+  
+  .button {
+    margin-right: 10px;
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+  }
+  
+  .button.black {
+    background-color: black;
+    color: white;
+  }
+  

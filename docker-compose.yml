@@ -1,0 +1,56 @@
+services:
+  backend:
+    build:
+      context: ./ada-back
+    ports:
+      - "4000:4000"  # Port du backend
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - database
+    networks:
+      - ada
+
+  frontend:
+    build:
+      context: ./ada-front
+    ports:
+      - "3000:3000"  # Port du frontend
+    depends_on:
+      - backend
+    networks:
+      - ada
+
+# phpmyadmin container
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: database
+    networks:
+      - ada
+
+  database:
+    image: mysql:latest
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        MYSQL_DATABASE: ada_db
+    ports:
+      - "3306:3306"  # Port de la base de données
+    networks:
+      - ada
+
+networks:
+  ada:
+    driver: bridge
+
+volumes:
+  db-data:
