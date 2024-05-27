@@ -43,9 +43,10 @@ jobs:
  
     - name: Deploy to VPS
       run: |
-        ssh -t -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no -tt ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
           cd /www/project/ada
           git pull origin main
+          cd /www/project/ada
           docker-compose down
           docker-compose up --build -d
         EOF
