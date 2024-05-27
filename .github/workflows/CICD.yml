@@ -44,9 +44,8 @@ jobs:
     - name: Deploy to VPS
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-          cd /www/project
-          git pull origin main
           cd /www/project/ada
+          git pull origin main
           docker-compose down
           docker-compose up --build -d
         EOF
