@@ -21,15 +21,23 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Install dependencies
+    - name: Install front-end dependencies
       run: |
+        cd ada/ada-front
         npm install
 
-    - name: Build React app
-      run: npm run build ada/ada-front
+    - name: Build front-end
+      run: |
+        cd ada/ada-front
+        npm run build
+
+    - name: Install back-end dependencies
+      run: |
+        cd ada/ada-back
+        npm install
 
     - name: Build Docker images
-      run: docker-compose build
+      run: docker-compose -f ada/docker-compose.yml build
 
     - name: Save Docker images to tar
       run: |
@@ -38,7 +46,7 @@ jobs:
 
     - name: Archive build artifacts and Docker images
       run: |
-        tar -cvf deployment-package.tar.gz build/ docker-compose.yml docker-images/
+        tar -cvf deployment-package.tar.gz ada/ada-front/build/ ada/docker-compose.yml docker-images/
 
     - name: Upload to PlanetHoster via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.2.0
