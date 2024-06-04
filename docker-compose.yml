@@ -1,5 +1,6 @@
 services:
   backend:
+    image: backend
     build:
       context: ./ada-back
     ports:
@@ -12,6 +13,7 @@ services:
       - ada
 
   frontend:
+    image: frontend
     build:
       context: ./ada-front
     ports:
