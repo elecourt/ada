@@ -45,7 +45,7 @@ jobs:
     - name: Save Docker images to tar
       run: |
         mkdir -p docker-images
-        docker save -o docker-images/app.tar backend frontend phpmyadmin database
+        docker save -o docker-images/app.tar frontend phpmyadmin database
 
     - name: Archive build artifacts and Docker images
       run: |
