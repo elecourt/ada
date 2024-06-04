@@ -1,75 +1,26 @@
-name: CI/CD Pipeline
+name: S3 Deployment
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
-    - name: List files in the current directory
-      run: ls -la
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-
-    - name: Install front-end dependencies
+    - name: Install AWS CLI
       run: |
-        cd ada-front
-        npm install
-    
-    - name: List files in the ada-front directory after npm install
-      run: ls -la ada-front
+        sudo apt-get update
+        sudo apt-get install -y awscli
 
-    - name: Build front-end
+    - name: Transfer files to S3
       run: |
-        cd ada-front
-        npm run build
-
-    - name: Install back-end dependencies
-      run: |
-        cd ada-back
-        npm install
-
-    - name: Build Docker images using Docker Compose
-      run: docker-compose build
-
-    - name: Save Docker images to tar
-      run: |
-        mkdir -p docker-images
-        docker-compose pull
-        docker save -o docker-images/app.tar backend frontend phpmyadmin mysql:latest
-
-
-    - name: Archive build artifacts and Docker images
-      run: |
-        tar -cvf deployment-package.tar.gz ada-front/ docker-compose.yml docker-images/
-
-    - name: Upload to PlanetHoster via FTP
-      uses: SamKirkland/FTP-Deploy-Action@4.2.0
-      with:
-        ftp-server: ftp:cennet-ahat.mds-annecy.yt
-        ftp-username: ${{ secrets.FTP_USERNAME }}
-        ftp-password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: deployment-package.tar.gz
-        server-dir: /
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Trigger remote deployment script
-      run: |
-        curl -X POST https://cennet-ahat.mds-annecy.yt/
+        aws s3 sync . s3://twkyxrhv --region ht2-storage --endpoint-url=https://ht2-storage.n0c.com:5443 --ssl --no-sign-request --delete --exclude ".git/*"
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
