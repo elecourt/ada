@@ -23,21 +23,21 @@ jobs:
 
     - name: Install front-end dependencies
       run: |
-        cd ada/ada-front
+        cd ada-front
         npm install
 
     - name: Build front-end
       run: |
-        cd ada/ada-front
+        cd ada-front
         npm run build
 
     - name: Install back-end dependencies
       run: |
-        cd ada/ada-back
+        cd ada-back
         npm install
 
     - name: Build Docker images
-      run: docker-compose -f ada/docker-compose.yml build
+      run: docker-compose -f docker-compose.yml build
 
     - name: Save Docker images to tar
       run: |
