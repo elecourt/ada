@@ -49,7 +49,7 @@ jobs:
       run: |
         mkdir -p docker-images
         docker-compose pull
-        docker save -o docker-images/app.tar backend frontend phpmyadmin database
+        docker save -o docker-images/app.tar backend frontend phpmyadmin mysql:latest
 
 
     - name: Archive build artifacts and Docker images
