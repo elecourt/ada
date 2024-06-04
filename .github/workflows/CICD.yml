@@ -30,7 +30,7 @@ jobs:
         npm install
     
     - name: List files in the ada-front directory after npm install
-      run: ls -la ada/ada-front
+      run: ls -la ada-front
 
     - name: Build front-end
       run: |
