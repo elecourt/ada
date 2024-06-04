@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
-import logo from '../../assets/logo_ada_def.png';
+import logo from '../../assets/logo_ada3.png';
 import './Header.css';
 
 function Header() {
@@ -8,18 +8,20 @@ function Header() {
   return (
     <nav>
       <div className="header">
-      <img src={logo} alt="Logo" className="logo" />
+      <a href="#accueil" onClick={() => navigate('/')}><img src={logo} alt="Logo" className="logo" /></a>
       <ul className="nav-links">
-        <li><a href="#accueil" onClick={() => navigate('/')}>Accueil</a></li>
-        <li><a href="#service">Service</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="#equipe">Equipe</a></li>
+        <li><a href="#quisommesnous">Qui sommes-nous ?</a></li>
+        <li><a href="#service">Nos services</a></li>
+        <li><a href="#contact">Tarifs</a></li>
+        <li><a href="#equipe">Actualites</a></li>
+        <li><a href="#equipe">Contact</a></li>
       </ul>
       <div className="buttons">
-        <button className="button">Button</button>
-        <button className="button black">Button</button>
+        <a href="#chat"><button className="button">Chat</button></a>
+        <a href="#connexion"><button className="button orange">Connexion</button></a>
       </div>
       </div>
+      <hr></hr>
       <Outlet></Outlet>
     </nav>
     

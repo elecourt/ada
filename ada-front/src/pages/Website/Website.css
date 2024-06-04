@@ -5,6 +5,11 @@
   height: 90vh;
   }
 
+.website img {
+  width: 30%;
+  margin: 35px;
+}
+
 p {
   font-size: 25px;
   font-weight: bold;

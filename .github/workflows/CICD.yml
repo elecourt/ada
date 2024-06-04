@@ -1,5 +1,5 @@
-name: CI/CD Pipeline 
- 
+name: CI/CD Pipeline
+
 on:
   push:
     branches:
@@ -7,45 +7,53 @@ on:
   pull_request:
     branches:
       - main
- 
+
 jobs:
   build:
     runs-on: ubuntu-latest
- 
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
- 
+
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '16'
- 
-    # - name: Install dependencies
-    #   run: |
-    #     npm install
- 
-    # - name: Build React app
-    #   run: npm run build ada/ada-front
- 
+
+    - name: Install dependencies
+      run: |
+        npm install
+
+    - name: Build React app
+      run: npm run build ada/ada-front
+
+    - name: Build Docker images
+      run: docker-compose build
+
+    - name: Save Docker images to tar
+      run: |
+        mkdir -p docker-images
+        docker save -o docker-images/app.tar <your-app-image>
+
+    - name: Archive build artifacts and Docker images
+      run: |
+        tar -cvf deployment-package.tar.gz build/ docker-compose.yml docker-images/
+
+    - name: Upload to PlanetHoster via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.2.0
+      with:
+        ftp-server: ftp:cennet-ahat.mds-annecy.yt
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: deployment-package.tar.gz
+        server-dir: /
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
- 
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
- 
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
- 
-    - name: Deploy to VPS
+    - name: Trigger remote deployment script
       run: |
-        ssh -o StrictHostKeyChecking=no -tt ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-          cd /www/project/ada
-          git pull origin main
-          docker-compose down
-          docker-compose up --build -d
-        EOF
+        curl -X POST https://cennet-ahat.mds-annecy.yt/

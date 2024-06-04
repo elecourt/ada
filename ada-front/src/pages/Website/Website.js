@@ -1,5 +1,5 @@
 import './Website.css';
-import logoAdaDef from '../../assets/logo_ada_def.png';
+import logoAdaDef from '../../assets/logo_ada3.png';
 
 function Website() {  
     return (
