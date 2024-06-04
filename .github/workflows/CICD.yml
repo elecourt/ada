@@ -45,11 +45,11 @@ jobs:
     - name: Save Docker images to tar
       run: |
         mkdir -p docker-images
-        docker save -o docker-images/app.tar <your-app-image>
+        docker save -o docker-images/app.tar ada
 
     - name: Archive build artifacts and Docker images
       run: |
-        tar -cvf deployment-package.tar.gz ada/ada-front/build/ ada/docker-compose.yml docker-images/
+        tar -cvf deployment-package.tar.gz ada-front/build/ docker-compose.yml docker-images/
 
     - name: Upload to PlanetHoster via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.2.0
